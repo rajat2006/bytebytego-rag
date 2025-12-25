@@ -1,11 +1,14 @@
 import json
 import time
 import sys
+import os
 sys.path.insert(0, '.')
 
 # Import the extractor (we'll use the function from 08_complete_post_extractor.py)
 import importlib.util
-spec = importlib.util.spec_from_file_location("extractor", "08_complete_post_extractor.py")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+extractor_path = os.path.join(script_dir, "08_complete_post_extractor.py")
+spec = importlib.util.spec_from_file_location("extractor", extractor_path)
 extractor_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(extractor_module)
 extract_post = extractor_module.extract_post

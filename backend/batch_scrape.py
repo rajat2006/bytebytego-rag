@@ -173,6 +173,10 @@ def main():
     debug_file_logs = os.getenv('DEBUG_FILE_LOGS', 'true').lower() == 'true'
     rate_limit = float(os.getenv('RATE_LIMIT', '1.0'))
 
+    # Calculate project root (parent of backend directory)
+    script_dir = Path(__file__).resolve().parent  # /path/to/backend
+    project_root = script_dir.parent  # /path/to/project
+
     print("="*60)
     print("ByteByteGo Batch Scraper")
     print("="*60)
@@ -181,7 +185,7 @@ def main():
     print("="*60)
 
     # Setup output directory
-    output_dir = Path('_local-testing-data/posts')
+    output_dir = project_root / '_local-testing-data' / 'posts'
     if debug_file_logs:
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -191,7 +195,7 @@ def main():
     print(f"\n✓ Total unique posts found: {len(all_urls)}")
 
     # Save URL list for reference (only if debug logging is enabled)
-    urls_file = Path('_local-testing-data/all_urls.json')
+    urls_file = project_root / '_local-testing-data' / 'all_urls.json'
     if debug_file_logs:
         with open(urls_file, 'w', encoding='utf-8') as f:
             json.dump(all_urls, f, indent=2, ensure_ascii=False)
@@ -210,7 +214,7 @@ def main():
 
     # Step 3: Save summary report (only if debug logging is enabled)
     print(f"\n[Step 3/3] Generating summary report...")
-    summary_file = Path('_local-testing-data/scraping_summary.json')
+    summary_file = project_root / '_local-testing-data' / 'scraping_summary.json'
     if debug_file_logs:
         with open(summary_file, 'w', encoding='utf-8') as f:
             json.dump(summary, f, indent=2, ensure_ascii=False)
